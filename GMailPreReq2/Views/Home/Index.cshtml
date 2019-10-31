@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/js/fabric.min.js"></script>
+
+<script>
+    function makeid(length) {
+        var result = '';
+        var characters = 'abcdefghijklmnopqrstuvwxyz';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function startaction() {
+        document.getElementById('pageheader').innerText = "Performing these steps automatically ...";
+
+        const id = makeid(3);
+        const projectid = "projectid" + id;
+        const projectName = "projectname" + id;
+        var uniqueID = "";
+
+        console.log("Project ID: " + projectid);
+
+        document.getElementById('icon1').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon1').setAttribute('width', '15');
+
+        const Http = new XMLHttpRequest();
+        const url = "./api/Project/?projectID=" + projectid + "&projectName=" + projectName;
+        Http.open("POST", url);
+        Http.send();
+
+        Http.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                console.log("Create Project: " + this.status);
+            }
+        };
+
+        // Sleep for 60 seconds
+        await sleep(60000);
+
+        document.getElementById('icon1').setAttribute('src', 'images\\Done.png');
+        document.getElementById('icon1').setAttribute('width', '15');
+
+        // Next step
+
+        document.getElementById('icon2').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon2').setAttribute('width', '15');
+
+        const Http1 = new XMLHttpRequest();
+        const url1 = "./api/ServiceAccount/?projectID=" + projectid + "&accountID=serviceaccountkey&displayName=SADisplayName";
+        Http1.open("POST", url1);
+        Http1.send();
+
+        Http1.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                console.log("Create SA: " + this.status);
+                uniqueID = this.responseText;
+            }
+        };
+
+        document.getElementById('icon2').setAttribute('src', 'images\\Done.png');
+        document.getElementById('icon2').setAttribute('width', '15');
+
+        document.getElementById('icon3').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon3').setAttribute('width', '15');
+
+        // Sleep for 2 seconds
+        await sleep(2000);
+
+        document.getElementById('icon3').setAttribute('src', 'images\\Done.png');
+        document.getElementById('icon3').setAttribute('width', '15');
+
+        document.getElementById('icon4').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon4').setAttribute('width', '15');
+
+        // Next step
+
+        const Http2 = new XMLHttpRequest();
+        const url2 = "./api/EnableAPI/?projectID=" + projectid;
+        Http2.open("POST", url2);
+        Http2.send();
+
+        Http2.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                console.log("Enable API: " + this.status);
+            }
+        };
+
+        document.getElementById('icon4').setAttribute('src', 'images\\Done.png');
+        document.getElementById('icon4').setAttribute('width', '15');
+
+        document.getElementById('icon5').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon5').setAttribute('width', '15');
+
+        // Next step
+
+        const Http3 = new XMLHttpRequest();
+        const url3 = "./api/Domain/?newdomainprefix=" + id;
+        Http3.open("POST", url3);
+        Http3.send();
+
+        Http3.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                console.log("Create Domain: " + this.status);
+            }
+        };
+
+        document.getElementById('icon5').setAttribute('src', 'images\\Done.png');
+        document.getElementById('icon5').setAttribute('width', '15');
+
+        document.getElementById('icon6').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon6').setAttribute('width', '15');
+
+        document.getElementById('icon7').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon7').setAttribute('width', '15');
+
+        // Sleep for 10 seconds
+        await sleep(10000);
+
+        document.getElementById('icon6').setAttribute('src', 'images\\blank.png');
+        document.getElementById('icon6').setAttribute('width', '15');
+
+        document.getElementById('icon7').setAttribute('src', 'images\\blank.png');
+        document.getElementById('icon7').setAttribute('width', '15');
+
+        uniqueID = uniqueID.substring(1, uniqueID.length - 1);
+
+        document.getElementById('delegationtext').innerHTML = "Go <a href=\'https://console.cloud.google.com/iam-admin/serviceaccounts/details/" + uniqueID + "?project=" + projectid + "\' target=\'_blank\'>here</a> and enable domain-wide delegation";
+
+        document.getElementById('scopetext').innerHTML = "Go <a href=\'https://admin.google.com/AdminHome?chromeless=1#OGX:ManageOauthClients\' target=\'_blank\'>here</a> and add scopes for API access.<br /><table><tr><th width=\"200px\">Client Name</th><th width=\"500px\">API Scopes</th></tr><tr><td>" + uniqueID + "</td><td>https://mail.google.com/,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/gmail.settings.sharing</td></tr></table>";
+    }
+
+    function startaction1() {
+        document.getElementById('icon1').setAttribute('src', 'images\\progress.png');
+        document.getElementById('icon1').setAttribute('width', '15');
+        //document.getElementById('delegationtext').innerHTML = "Go to <a href=\'www.google.com\'>Google</a><br /><table><tr><th width=\"200px\">Client Name</th><th width=\"500px\">API Scopes</th></tr><tr><td>105028474664095074151</td><td>https://mail.google.com/,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/gmail.settings.sharing</td></tr></table>";
+    }
+</script>
+
+<div class="jumbotron">
+    <p class="lead" id="pageheader">G-Suite Migration Pre-requisite steps</p>
+</div>
+
+<div class="row">
+    <div><img src="images\blank.png" width="15" id="icon1" />&nbsp;&nbsp;&nbsp; Create a G-Suite project</div>
+    <br />
+    <div><img src="images\blank.png" width="15" id="icon2" />&nbsp;&nbsp;&nbsp; Create a G-Suite Service Account in the project</div>
+    <br />
+    <div><img src="images\blank.png" width="15" id="icon3" />&nbsp;&nbsp;&nbsp; Create service key</div>
+    <br />
+    <div><img src="images\blank.png" width="15" id="icon4" />&nbsp;&nbsp;&nbsp; Enable APIs</div>
+    <br />
+    <div><img src="images\blank.png" width="15" id="icon5" />&nbsp;&nbsp;&nbsp; Add sub domains</div>
+    <br />
+    <div><img src="images\blank.png" width="15" id="icon6" />&nbsp;&nbsp;&nbsp; Enable G-Suite domain wide delegation</div>
+    <div id="delegationtext"></div>
+    <br />
+    <div><img src="images\blank.png" width="15" id="icon7" />&nbsp;&nbsp;&nbsp; Manage API client access</div>
+    <div id="scopetext"></div>
+    <br />
+    <br />
+    <br />
+</div>
+
+<div>
+    <button onclick="startaction()">Start</button>
+</div>
