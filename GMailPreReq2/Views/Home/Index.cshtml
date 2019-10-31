@@ -21,12 +21,14 @@
     }
 
     async function startaction() {
-        document.getElementById('pageheader').innerText = "Performing these steps automatically ...";
-
         const id = makeid(3);
         const projectid = "projectid" + id;
         const projectName = "projectname" + id;
         var uniqueID = "";
+
+        document.getElementById('notetext').innerText = "Note: It may take around 60 seconds to complete the set up for G-Suite Migration";
+        document.getElementById('button1').disabled = true;
+        document.getElementById('button1').style = "background-color:rgb(234,234,234);color:rgb(33,33,33);padding-left:16px;padding-right:16px;padding-top:5px;padding-bottom:5px;margin-left:10px;";
 
         console.log("Project ID: " + projectid);
 
@@ -123,8 +125,8 @@
         document.getElementById('icon7').setAttribute('src', 'images\\progress.png');
         document.getElementById('icon7').setAttribute('width', '15');
 
-        // Sleep for 10 seconds
-        await sleep(10000);
+        // Sleep for 2 seconds
+        await sleep(2000);
 
         document.getElementById('icon6').setAttribute('src', 'images\\blank.png');
         document.getElementById('icon6').setAttribute('width', '15');
@@ -136,20 +138,25 @@
 
         document.getElementById('delegationtext').innerHTML = "Go <a href=\'https://console.cloud.google.com/iam-admin/serviceaccounts/details/" + uniqueID + "?project=" + projectid + "\' target=\'_blank\'>here</a> and enable domain-wide delegation";
 
-        document.getElementById('scopetext').innerHTML = "Go <a href=\'https://admin.google.com/AdminHome?chromeless=1#OGX:ManageOauthClients\' target=\'_blank\'>here</a> and add scopes for API access.<br /><table><tr><th width=\"200px\">Client Name</th><th width=\"500px\">API Scopes</th></tr><tr><td>" + uniqueID + "</td><td>https://mail.google.com/,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/gmail.settings.sharing</td></tr></table>";
+        document.getElementById('scopetext').innerHTML = "Go <a href=\'https://admin.google.com/AdminHome?chromeless=1#OGX:ManageOauthClients\' target=\'_blank\'>here</a> and add scopes for API access.<br /><table><tr><th width=\"230px\">Client Name</th><th width=\"500px\">API Scopes</th></tr><tr><td>" + uniqueID + "</td><td>https://mail.google.com/,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/gmail.settings.sharing</td></tr></table>";
     }
 
     function startaction1() {
         document.getElementById('icon1').setAttribute('src', 'images\\progress.png');
         document.getElementById('icon1').setAttribute('width', '15');
+        document.getElementById('button1').disabled = true;
+        document.getElementById('button1').style = "background-color:rgb(234,234,234);color:rgb(33,33,33);padding-left:16px;padding-right:16px;margin-left:10px;";
         //document.getElementById('delegationtext').innerHTML = "Go to <a href=\'www.google.com\'>Google</a><br /><table><tr><th width=\"200px\">Client Name</th><th width=\"500px\">API Scopes</th></tr><tr><td>105028474664095074151</td><td>https://mail.google.com/,https://www.google.com/m8/feeds/,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/gmail.settings.sharing</td></tr></table>";
     }
 </script>
 
-<div class="jumbotron">
-    <p class="lead" id="pageheader">G-Suite Migration Pre-requisite steps</p>
+<br />
+<div class="row" style="margin-left:16px;font-size:30px;">
+    <b>G-Suite Pre-requisites</b>
 </div>
-
+<br />
+<div class="row" style="margin-left:16px;font-size:18px;">Gmail requires you to complete the prerequisites steps to migrate to Exchange Online</div>
+<div class="row" id="notetext" style="margin-left:16px;font-size:18px;margin-top:15px;margin-bottom:15px;">&nbsp;</div>
 <div class="row">
     <div><img src="images\blank.png" width="15" id="icon1" />&nbsp;&nbsp;&nbsp; Create a G-Suite project</div>
     <br />
@@ -162,15 +169,15 @@
     <div><img src="images\blank.png" width="15" id="icon5" />&nbsp;&nbsp;&nbsp; Add sub domains</div>
     <br />
     <div><img src="images\blank.png" width="15" id="icon6" />&nbsp;&nbsp;&nbsp; Enable G-Suite domain wide delegation</div>
-    <div id="delegationtext"></div>
+    <div id="delegationtext" style="margin-left:30px;"></div>
     <br />
     <div><img src="images\blank.png" width="15" id="icon7" />&nbsp;&nbsp;&nbsp; Manage API client access</div>
-    <div id="scopetext"></div>
+    <div id="scopetext" style="margin-left:30px;"></div>
     <br />
     <br />
     <br />
 </div>
 
 <div>
-    <button onclick="startaction()">Start</button>
+    <button id="button1" onclick="startaction()" style="background-color:rgb(16,110,190);color:white;padding-left:16px;padding-right:16px;padding-top:5px;padding-bottom:5px;margin-left:10px;">Start</button>
 </div>
